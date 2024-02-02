@@ -46,9 +46,12 @@ public class CategoryServices {
 
     public Category deleteCategory(String idCategory){
 
+        if (idCategory == null || idCategory.isEmpty()){
+            throw new IllegalArgumentException("Invalid input data");
+        }
         Category categoryData = this.repository.findById(idCategory).orElseThrow(CategoryNotFoundException::new);
-        this.repository.delete(categoryData);
 
+        this.repository.delete(categoryData);
         return categoryData;
     }
 }
