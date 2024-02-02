@@ -12,11 +12,9 @@ import java.util.Optional;
 @Service
 public class CategoryServices {
     private CategoryRepository repository;
-
     public CategoryServices(CategoryRepository repository){
         this.repository = repository;
     }
-
     public List<Category> getAll(){
         return this.repository.findAll();
     }
@@ -24,19 +22,22 @@ public class CategoryServices {
         return this.repository.save(new Category(category));
     }
 
-    //TODO: Verify if newCategoryData is null
     public Category UpdateCategory(CategoryDTO newCategoryData ,String idCategory){
+
+        if (newCategoryData == null || idCategory == null){
+            throw new IllegalArgumentException("Invalid input data");
+        }
         Category categoryData = this.repository.findById(idCategory).orElseThrow(CategoryNotFoundException::new);
 
-        if (!newCategoryData.title().isEmpty()){
+        if (newCategoryData.title() != null && !newCategoryData.title().isEmpty()){
             categoryData.setTitle(newCategoryData.title());
         }
 
-        if (!newCategoryData.description().isEmpty()){
+        if (newCategoryData.description() != null &&!newCategoryData.description().isEmpty()){
             categoryData.setDescription(newCategoryData.description());
         }
 
-        if (!newCategoryData.ownerId().isEmpty()){
+        if (newCategoryData.ownerId() != null && !newCategoryData.ownerId().isEmpty()){
             categoryData.setOwnerId(newCategoryData.ownerId());
         }
 
